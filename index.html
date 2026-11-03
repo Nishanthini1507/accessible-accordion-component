@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accessible Accordion Demo | Spoke &amp; Co.</title>
+  <link rel="stylesheet" href="accordion.css">
+  <!-- "defer" runs the script after the HTML is parsed -->
+  <script src="accordion.js" defer></script>
+</head>
+<body>
+  <main class="page">
+    <h1>Accessible Accordion</h1>
+    <p class="lead">A reusable, keyboard-friendly accordion built with vanilla JavaScript.</p>
+
+    <!-- DEMO 1: only one panel open at a time (default behaviour).
+         Markup rules: each trigger is a <button> inside a heading, and its
+         aria-controls must match the id of its panel. -->
+    <section id="faq-section" aria-labelledby="faq-title">
+      <h2 id="faq-title">Frequently asked questions</h2>
+      <div class="accordion" data-accordion>
+
+        <h3 class="accordion__heading">
+          <button class="accordion__trigger" id="faq-t1" aria-expanded="true" aria-controls="faq-p1">
+            How fast is a typical repair?<span class="accordion__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="accordion__panel" id="faq-p1" role="region" aria-labelledby="faq-t1">
+          <div class="accordion__inner"><p>Most repairs are finished the next day if the bike is dropped off before 10am.</p></div>
+        </div>
+
+        <h3 class="accordion__heading">
+          <button class="accordion__trigger" id="faq-t2" aria-expanded="false" aria-controls="faq-p2">
+            Do you give a quote first?<span class="accordion__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="accordion__panel" id="faq-p2" role="region" aria-labelledby="faq-t2">
+          <div class="accordion__inner"><p>Yes. We inspect the bike, tell you the price, and only start work once you agree.</p></div>
+        </div>
+
+        <h3 class="accordion__heading">
+          <button class="accordion__trigger" id="faq-t3" aria-expanded="false" aria-controls="faq-p3">
+            Can you repair electric bikes?<span class="accordion__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="accordion__panel" id="faq-p3" role="region" aria-labelledby="faq-t3">
+          <div class="accordion__inner"><p>We service the mechanical parts of e-bikes, such as brakes, gears and tyres. Motor and battery faults go to the maker.</p></div>
+        </div>
+
+        <h3 class="accordion__heading">
+          <button class="accordion__trigger" id="faq-t4" aria-expanded="false" aria-controls="faq-p4">
+            What payment methods do you accept?<span class="accordion__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="accordion__panel" id="faq-p4" role="region" aria-labelledby="faq-t4">
+          <div class="accordion__inner"><p>Cash, cards and mobile wallets.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEMO 2: same component, reused with data-allow-multiple="true"
+         so several panels can stay open together. -->
+    <section aria-labelledby="care-title">
+      <h2 id="care-title">Bike care tips</h2>
+      <div class="accordion" data-accordion data-allow-multiple="true">
+
+        <h3 class="accordion__heading">
+          <button class="accordion__trigger" id="care-t1" aria-expanded="false" aria-controls="care-p1">
+            Tyre pressure<span class="accordion__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="accordion__panel" id="care-p1" role="region" aria-labelledby="care-t1">
+          <div class="accordion__inner"><p>Check it every two weeks. The correct range is printed on the tyre sidewall.</p></div>
+        </div>
+
+        <h3 class="accordion__heading">
+          <button class="accordion__trigger" id="care-t2" aria-expanded="false" aria-controls="care-p2">
+            Chain care<span class="accordion__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="accordion__panel" id="care-p2" role="region" aria-labelledby="care-t2">
+          <div class="accordion__inner"><p>Wipe the chain and add a drop of lubricant every few rides, more often in wet weather.</p></div>
+        </div>
+
+        <h3 class="accordion__heading">
+          <button class="accordion__trigger" id="care-t3" aria-expanded="false" aria-controls="care-p3">
+            Brake check<span class="accordion__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="accordion__panel" id="care-p3" role="region" aria-labelledby="care-t3">
+          <div class="accordion__inner"><p>Squeeze each lever. If it touches the handlebar, the brakes need adjusting.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,107 @@
+/* =========================================================
+   Accordion component styles
+   Progressive enhancement: without JavaScript every panel is
+   simply visible. The class .is-enhanced (added by JS) switches
+   on the collapsed behaviour.
+   ========================================================= */
+
+:root {
+  --teal: #0f3d3e;
+  --teal-dark: #0a2a2b;
+  --yellow: #f2c14e;
+  --paper: #f7f9f9;
+  --ink: #14201f;
+  --line: #c9d6d5;
+  --speed: 0.3s;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+}
+.page { width: min(720px, 100% - 2rem); margin: 0 auto; padding: 2.5rem 0 4rem; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); margin: 0 0 .25rem; color: var(--teal); }
+h2 { font-size: clamp(1.3rem, 3.5vw, 1.6rem); margin: 2.5rem 0 1rem; }
+.lead { color: #4d5f5e; margin: 0; }
+
+/* ---------- Component ---------- */
+.accordion {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+.accordion__heading { margin: 0; font-size: 1rem; }   /* heading semantics, button styling */
+.accordion__heading + .accordion__panel + .accordion__heading { border-top: 1px solid var(--line); }
+
+/* The trigger is a real <button>, so Enter and Space work for free */
+.accordion__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  min-height: 52px;               /* comfortable touch target */
+  padding: .9rem 1.25rem;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  color: var(--ink);
+  background: #fff;
+  border: 0;
+  cursor: pointer;
+}
+.accordion__trigger:hover { background: #eef4f4; }
+.accordion__trigger[aria-expanded="true"] { background: var(--teal); color: #fff; }
+/* Clearly visible keyboard focus (inset so overflow:hidden does not clip it) */
+.accordion__trigger:focus-visible { outline: 3px solid var(--yellow); outline-offset: -3px; }
+
+/* Plus icon drawn with two bars; the vertical bar fades so "+" becomes "-" */
+.accordion__icon { position: relative; flex: 0 0 18px; height: 18px; }
+.accordion__icon::before, .accordion__icon::after {
+  content: ""; position: absolute; background: currentColor; border-radius: 2px;
+  transition: transform var(--speed) ease, opacity var(--speed) ease;
+}
+.accordion__icon::before { left: 0; right: 0; top: 8px; height: 2px; }
+.accordion__icon::after  { top: 0; bottom: 0; left: 8px; width: 2px; }
+.accordion__trigger[aria-expanded="true"] .accordion__icon::after { transform: rotate(90deg); opacity: 0; }
+
+/* Padding lives on the text, not on __inner, so a closed panel collapses to 0 height */
+.accordion__inner p { margin: 0; padding: 1rem 1.25rem 1.25rem; }
+
+/* ---------- Enhanced (JavaScript) mode ----------
+   Animate height using grid rows: 0fr (closed) to 1fr (open). */
+.is-enhanced .accordion__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;   /* removes closed content from tab order and screen readers */
+  /* On close, wait for the animation before hiding */
+  transition: grid-template-rows var(--speed) ease, visibility 0s linear var(--speed);
+}
+.is-enhanced .accordion__panel.is-open {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows var(--speed) ease, visibility 0s;
+}
+.is-enhanced .accordion__inner { min-height: 0; overflow: hidden; }
+
+/* Fallback for older browsers without 0fr support: simple show/hide */
+@supports not (grid-template-rows: 0fr) {
+  .is-enhanced .accordion__panel { display: none; }
+  .is-enhanced .accordion__panel.is-open { display: block; }
+}
+
+/* Respect users who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+  .is-enhanced .accordion__panel, .accordion__icon::before, .accordion__icon::after { transition: none; }
+}
+
+/* Small screens: slightly tighter spacing */
+@media (max-width: 480px) {
+  .accordion__trigger { padding: .8rem 1rem; }
+  .accordion__inner p { padding: .9rem 1rem 1.1rem; }
+}
